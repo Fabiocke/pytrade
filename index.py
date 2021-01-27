@@ -2,7 +2,12 @@
 
 from flask import Flask, make_response, request, render_template
 import requests
+from spyb3 import portfolio as pt
+from spyb3.crawler import acoes
 from bs4 import BeautifulSoup as bs
+
+import zlib
+import pickle
 
 app = Flask(__name__)
 
@@ -26,17 +31,64 @@ def home():
 def listaativos():
     return str(ativos_lista())
 
+@app.route('/carteira/<params>')  # /landingpage/A
+def carteira(params):
+    import pandas as pd
+    carteira = eval(f"pt.Carteira({params})")
+    cstring=carteira.__repr__().replace('\n','<br>')
+    df1=pd.DataFrame([['a', 1],['b', 4]],columns=['m', 'k'])
+    return set_cookie('carteira',pickle.dumps(df1).replace(b'`',b'apostrofo'))
 
-@app.route('/teste_set/<v>_<r>')
+
+@app.route('/set_coockie/<v>_<r>')
 def salvar(v,r):
     return f"<script>localStorage['{v}'] = '{r}'</script>"
 
-@app.route('/teste_get/<v>')
-def getar(v):
-    return f"""<script>var myVar = localStorage['{v}'] || 'defaultValue'
+def set_cookie(v,r):
+    return f"""<html lang="pt-BR">
+    <script>localStorage['{v}'] = `{r}`</script>"""
+
+
+
+@app.route('/get_post_json/')
+def get_post_json():    
+    return  f"""<script>
                     document.write(myVar)
                     </script>"""
+    data = request.get_json()
 
+    return str(data)
+
+
+@app.route('/geta/<f>')
+def geta(f):    
+    return cookie(f,0)
+
+
+@app.route('/cookie/<s>_<g>')
+def cookie(s,g):
+    print(s,g)
+    if not request.cookies.get(s):
+        res = make_response()
+        res.set_cookie(s,g)
+    else:
+        res = make_response(request.cookies.get(s))
+    return res
+    request.cache_control()
+
+
+from flask_caching import Cache
+cache = Cache()
+cache.init_app(app, config={"CACHE_TYPE": "simple"})
+
+@app.route('/setar/<v>_<r>')
+def setar(v,r):
+    cache.set(v,r)
+    return ''
+
+@app.route('/getar/<v>')
+def getar(v):
+    return str(cache.get(v))
 
 #app.run()
 
