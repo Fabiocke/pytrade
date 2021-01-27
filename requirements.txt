@@ -1,0 +1,10 @@
+flask==1.0.2
+pandas
+requests
+numpy
+pandas_datareader
+beautifulsoup4
+
+
+
+
