@@ -38,6 +38,6 @@ def getar(v):
                     </script>"""
 
 
-app.run()
+#app.run()
 
 
