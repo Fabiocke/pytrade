@@ -17,7 +17,6 @@ def ativos_lista():
     a=[j for i in a for j in i]
     return [i for i in a if (len(i[0])==5 and i[0][-1:] in ('3','4','5')) or (len(i[0])==6 and i[-2:]=='11')]
     
-    
 
 @app.route('/')
 def home():
@@ -28,6 +27,15 @@ def listaativos():
     return str(ativos_lista())
 
 
+@app.route('/teste_set/<v>_<r>')
+def salvar(v):
+    return f"<script>localStorage['{v}'] = '{r}'</script>"
+
+@app.route('/teste_get/<v>')
+def getar(v):
+    return f"""<script>var myVar = localStorage['{v}'] || 'defaultValue'
+                    document.write(myvar)
+                    </script>"""
 
 
 
