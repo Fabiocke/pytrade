@@ -28,14 +28,16 @@ def listaativos():
 
 
 @app.route('/teste_set/<v>_<r>')
-def salvar(v):
+def salvar(v,r):
     return f"<script>localStorage['{v}'] = '{r}'</script>"
 
 @app.route('/teste_get/<v>')
 def getar(v):
     return f"""<script>var myVar = localStorage['{v}'] || 'defaultValue'
-                    document.write(myvar)
+                    document.write(myVar)
                     </script>"""
 
+
+app.run()
 
 
