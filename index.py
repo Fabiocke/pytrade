@@ -88,6 +88,6 @@ def setar(v,r):
 def getar(v):
     return str(cache.get(v))
 
-app.run()
+#app.run()
 
 
