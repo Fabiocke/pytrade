@@ -79,7 +79,6 @@ def cookie(s,g):
 
 from flask_caching import Cache
 
-
 @app.route('/setar/<v>_<r>')
 def setar(v,r):
     cache.set(v,r)
