@@ -78,6 +78,15 @@ def cookie(s,g):
 
 
 from flask_caching import Cache
+config = {
+    "DEBUG": True,          # some Flask specific configs
+    "CACHE_TYPE": "simple", # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
+
+# tell Flask to use the above defined config
+app.config.from_mapping(config)
+cache = Cache(app)
 
 @app.route('/setar/<v>_<r>')
 def setar(v,r):
