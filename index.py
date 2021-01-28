@@ -11,6 +11,8 @@ import pickle
 
 app = Flask(__name__)
 
+dictobjs={}
+
 # Nome dos ativos no site do infomoney
 def ativos_lista():
     r = requests.get('https://www.infomoney.com.br/cotacoes/empresas-b3/')
@@ -37,66 +39,16 @@ def carteira(params):
     carteira = eval(f"pt.Carteira({params})")
     cstring=carteira.__repr__().replace('\n','<br>')
     df1=pd.DataFrame([['a', 1],['b', 4]],columns=['m', 'k'])
-    return set_cookie('carteira',pickle.dumps(df1).replace(b'`',b'apostrofo'))
+    return set_cookie('carteira',zlib.compress(pickle.dumps(df1)))
 
 
-@app.route('/set_coockie/<v>_<r>')
-def salvar(v,r):
-    return f"<script>localStorage['{v}'] = '{r}'</script>"
+def set_obj(nm,v):
+    dictobjs={}
 
-def set_cookie(v,r):
-    return f"""<html lang="pt-BR">
-    <script>localStorage['{v}'] = `{r}`</script>"""
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return request.remote_addr
 
-
-
-@app.route('/get_post_json/')
-def get_post_json():    
-    return  f"""<script>
-                    document.write(myVar)
-                    </script>"""
-    data = request.get_json()
-
-    return str(data)
-
-
-@app.route('/geta/<f>')
-def geta(f):    
-    return cookie(f,0)
-
-
-@app.route('/cookie/<s>_<g>')
-def cookie(s,g):
-    print(s,g)
-    if not request.cookies.get(s):
-        res = make_response()
-        res.set_cookie(s,g)
-    else:
-        res = make_response(request.cookies.get(s))
-    return res
-    request.cache_control()
-
-
-from flask_caching import Cache
-config = {
-    "DEBUG": True,          # some Flask specific configs
-    "CACHE_TYPE": "filesystem", # Flask-Caching related configs
-    "CACHE_DEFAULT_TIMEOUT": 300
-}
-
-# tell Flask to use the above defined config
-app.config.from_mapping(config)
-cache = Cache(app)
-
-@app.route('/setar/<v>_<r>')
-def setar(v,r):
-    cache.set(v,r)
-    return ''
-
-@app.route('/getar/<v>')
-def getar(v):
-    return str(cache.get(v))
-
-#app.run()
+app.run()
 
 
