@@ -6,8 +6,6 @@ from spyb3 import portfolio as pt
 from spyb3.crawler import acoes
 from bs4 import BeautifulSoup as bs
 
-import zlib
-import pickle
 
 app = Flask(__name__)
 
@@ -49,6 +47,6 @@ def set_obj(nm,v):
 def get_my_ip():
     return request.remote_addr
 
-app.run()
+#app.run()
 
 
