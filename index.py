@@ -25,9 +25,7 @@ def ativos_lista():
 
 @app.route('/')
 def home():
-    ip = get_my_ip()
-    if ip not in dictobjs:
-        dictobjs.update(ip:{})
+    set_obj()
     return render_template('index.html')
 
 @app.route("/listaativos")
@@ -78,6 +76,6 @@ def set_obj(nm=0,v=0):
         dictobjs[ip].update({nm:v})
     
 
-#app.run()
+app.run()
 
 
