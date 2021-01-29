@@ -76,6 +76,6 @@ def set_obj(nm=0,v=0):
         dictobjs[ip].update({nm:v})
     
 
-app.run()
+#app.run()
 
 
