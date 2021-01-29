@@ -56,7 +56,7 @@ def get_carteira(params):
 
 @app.route('/carteira/<acao>')
 def carteira(acao):
-    print("dictobjs[ip]['carteira'][1]."+acao)
+    ip=get_my_ip()
     return str(eval("dictobjs[ip]['carteira'][1]."+acao))
 
 
@@ -76,6 +76,6 @@ def set_obj(nm=0,v=0):
         dictobjs[ip].update({nm:v})
     
 
-#app.run()
+app.run()
 
 
