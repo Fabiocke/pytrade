@@ -25,27 +25,58 @@ def ativos_lista():
 
 @app.route('/')
 def home():
+    ip = get_my_ip()
+    if ip not in dictobjs:
+        dictobjs.update(ip:{})
     return render_template('index.html')
 
 @app.route("/listaativos")
 def listaativos():
     return str(ativos_lista())
 
-@app.route('/carteira/<params>')  # /landingpage/A
-def carteira(params):
-    import pandas as pd
-    carteira = eval(f"pt.Carteira({params})")
-    cstring=carteira.__repr__().replace('\n','<br>')
-    df1=pd.DataFrame([['a', 1],['b', 4]],columns=['m', 'k'])
-    return set_cookie('carteira',zlib.compress(pickle.dumps(df1)))
-
-
-def set_obj(nm,v):
-    dictobjs={}
-
-@app.route("/get_my_ip", methods=["GET"])
+@app.route("/get_my_ip")
 def get_my_ip():
     return request.remote_addr
+
+@app.route('/get_carteira/<params>', methods=['GET','POST'])  # /landingpage/A
+def get_carteira(params):
+    import pandas as pd
+    ip = get_my_ip()
+    
+    if object_exist("dictobjs[ip]['carteira'][0]") and dictobjs[ip]['carteira'][0]==params:
+        if request.method=='GET':
+            return dictobjs[ip]['carteira'][1].__repr__().replace('\n','<br>')
+        elif request.method=='POST':
+            return dictobjs[ip]['carteira'][1]
+    
+    carteira = eval(f"pt.Carteira({params})")
+    set_obj('carteira',[params, carteira])
+    if request.method=='GET':
+        return str(carteira.__repr__().replace('\n','<br>'))
+    elif request.method=='POST':
+        return carteira
+
+@app.route('/carteira/<acao>')
+def carteira(acao):
+    print("dictobjs[ip]['carteira'][1]."+acao)
+    return str(eval("dictobjs[ip]['carteira'][1]."+acao))
+
+
+def object_exist(o):
+    try:
+        eval(o)
+        return True
+    except:
+        return False
+
+def set_obj(nm=0,v=0):
+    ip = get_my_ip()
+    if ip not in dictobjs:
+        dictobjs.update({ip:{}})
+    
+    if nm and v:
+        dictobjs[ip].update({nm:v})
+    
 
 #app.run()
 
