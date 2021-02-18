@@ -1,36 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Mercado</title>
+    <title>Menu Resp</title>
     <style>
-        body {
-            font: 18px arial;
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu {
+            width: 100%;
+            height: 50%;
+            background-color: #222;
+            font-family: 'Arial';
+        }
+
+        .menu ul {
+            list-style: none;
+            position: relative;
+        }
+
+        .menu ul li {
+            width: 150px;
+            float: left;
+        }
+
+        .menu a {
+            padding: 15px;
+            display: block;
+            text-decoration: none;
             text-align: center;
+            background-color: #222;
+            color: #fff;
+        }
+
+        .menu ul ul {
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .menu ul li:hover ul {
+            visibility: visible;
+        }
+
+        .menu a:hover {
+            background-color: #f4f4f4;
+            color: #555;
+        }
+
+        .menu ul ul li {
+            float: none;
+            border-bottom: solid 1px #ccc;
+        }
+
+        .menu ul ul li a {
+            background-color: #069;
+        }
+
+        label[for='bt_menu'] {
+            padding: 5px;
+            background-color: #222;
+            color: #fff;
+            font-family: 'Arial';
+            text-align: center;
+            font-size: 30px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+        }
+
+        #bt_menu {
+            display: none;
+        }
+
+        label[for='bt_menu'] {
+            display: none;
+        }
+
+        @media(max-width: 800px) {
+            label[for='bt_menu'] {
+                display: block;
+            }
+
+            #bt_menu:checked ~ .menu{
+                margin-left: 0;
+            }
+
+            .menu{
+                margin-top: 5px;
+                margin-left: -100%;
+            }
+
+            .menu ul li {
+                width: 100%;
+                float: none;
+
+            }
+
+            .menu a {
+                text-align: left;
+            }
+
+            .menu ul ul {
+                position: static;
+                overflow: hidden;
+                max-height: 0;
+                transition: all .4s;
+            }
+
+            .menu ul li:hover ul {
+                height: auto;
+                max-height: 200px;
+            }
+
         }
     </style>
 </head>
+
 <body>
-    <div class="menu-overlay"></div>
-    <a href="#" class="menu-open">Open Menu</a>
-    
-    <div class="side-menu-wrapper">
-    <a href="#" class="menu-close">×</a>
-    <ul>
-        <li><a href="http://www.google.com" target="_blank" rel="nofollow">Google Search</a></li>
-        <li><a href="http://www.yahoo.com" target="_blank" rel="nofollow">Yahoo Search</a></li>
-        <li><a href="http://www.facebook.com" target="_blank" rel="nofollow">Facebook</a></li>
-        <li><a href="http://www.flickr.com" target="_blank" rel="nofollow">Flickr</a></li>
-    
-    </ul>
-    </div>
-    <h1>Testess</h1>
-    <p>{{body}}</p>
-    <script>
-        var teste='oi'
-    </script> 
+
+    <input type="checkbox" id='bt_menu'>
+    <label for='bt_menu'>&#9776;</label>
+
+    <nav class='menu'>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Serviços</a>
+                <ul>
+                    <li><a href="">Criação de sites</a></li>
+                    <li><a href="">Arte Visual</a></li>
+                </ul>
+            </li>
+            <li><a href="">Cursos</a>
+                <ul>
+                    <li><a href="">Java</a></li>
+                    <li><a href="">Photoshop</a></li>
+                </ul>
+            </li>
+            <li><a href="">Contato</a></li>
+
+        </ul>
+    </nav>
+
 </body>
+
 </html>
-
-
